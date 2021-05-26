@@ -1,8 +1,16 @@
 from smartCam import surveillance
 import json
+import os
 
 
 def main():
+    isDir = os.path.isdir('images')
+    if not isDir:
+        try:
+            os.mkdir('images')
+        except OSError:
+            print("Failed to create images folder")
+
     config = None
 
     # Try to load configuration file, if the file doesn't exist ask user
