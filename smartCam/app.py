@@ -1,11 +1,11 @@
 import imutils
 from imutils.video import VideoStream
 import datetime
-import json
 import time
 import cv2
-import os
 import numpy as np
+import telegram
+from .telegram_bot import sendMessage, sendImage
 
 
 def surveillance(config):
@@ -19,6 +19,10 @@ def surveillance(config):
     motionDetected = False
     motionCounter = 0
     uploadsCounter = 0
+
+    # Initialize telegram bot
+    if config["send_telegram"]:
+        bot = telegram.Bot(token=config["telegram_token"])
 
     while True:
         time.sleep(1.0)
@@ -77,6 +81,9 @@ def surveillance(config):
                 lastUploaded = timestamp
                 motionCounter = 0
                 uploadsCounter += 1
+                if config["send_telegram"]:
+                    sendMessage(ts, config["tg_chat_id"], bot)
+                    sendImage(imgPath, config["tg_chat_id"], bot)
 
         else:
             motionCounter = 0
