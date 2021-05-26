@@ -28,6 +28,15 @@ def surveillance(config):
         motionDetected = False
         frame = imutils.resize(frame, width=500)
 
+        # Change image brightness and contrast if contrast is low
+        contrast = 4.0
+        brightness = 30
+        if frame[..., 2].mean() < 40:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            frame[:, :, 2] = np.clip(
+                contrast * frame[:, :, 2] + brightness, 0, 255)
+            frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
+
         # Proccess frame and compare with previous frames to detect motion
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
