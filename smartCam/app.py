@@ -57,3 +57,29 @@ def surveillance(config):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
         cv2.putText(frame, ts, (10, frame.shape[0] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+        # Save the image if motion detected
+        if (motionDetected and (timestamp - lastUploaded).seconds >= config["pause_between_uploads"]):
+            motionCounter += 1
+            if motionCounter >= config["min_motion_frames"]:
+                imgPath = f"./images/{nm}.jpg"
+                cv2.imwrite(imgPath, frame)
+                print(f"Uploaded: {ts}")
+                lastUploaded = timestamp
+                motionCounter = 0
+                uploadsCounter += 1
+
+        else:
+            motionCounter = 0
+
+        # Output cam video to the screen
+        if config["show_video"]:
+            cv2.imshow("Security Feed", frame)
+            if config["show_video_treshold"]:
+                cv2.imshow("Thresh", thresh)
+            if config["show_video_delta"]:
+                cv2.imshow("Frame Delta", frameDelta)
+            key = cv2.waitKey(1) & 0xFF
+
+        if key == ord("q"):
+            break
