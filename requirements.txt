@@ -4,7 +4,7 @@ astroid==2.4.2
 autopep8==1.5.6
 certifi==2020.12.5
 cffi==1.14.4
-cryptography==3.3.1
+cryptography==3.4.7
 decorator==4.4.2
 imutils==0.5.4
 isort==5.7.0
