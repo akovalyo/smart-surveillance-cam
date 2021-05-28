@@ -1,0 +1,15 @@
+{
+    "pause_between_uploads": 10.0,
+    "min_motion_frames": 4,
+    "camera_start_time": 1,
+    "delta_threshold": 5,
+    "min_area": 3000,
+    "show_video": true,
+    "show_video_treshold": false,
+    "show_video_delta": false,
+    "use_pi_camera": false,
+    "camera_src": 2,
+    "send_telegram": false,
+    "tg_chat_id": 0,
+    "telegram_token": ""
+  }
