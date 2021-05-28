@@ -3,6 +3,8 @@ from imutils.video import VideoStream
 import datetime
 import time
 import cv2
+import sys
+import signal
 import numpy as np
 import telegram
 from .telegram_bot import sendMessage, sendImage
@@ -10,9 +12,23 @@ from .telegram_bot import sendMessage, sendImage
 
 def surveillance(config):
     # Initialize the camera
-    vStream = VideoStream(
-        src=config["camera_src"], usePiCamera=config["use_pi_camera"]).start()
-    time.sleep(config["camera_start_time"])
+    camera_src = config["camera_src"]
+    cam_init = False
+    while not cam_init:
+        if not camera_src:
+            camera_src = input("Enter camera src number or 'q' to exit:\n")
+        if camera_src == "q":
+            sys.exit(0)
+        else:
+            camera_src = int(camera_src)
+        vStream = VideoStream(
+            src=camera_src, usePiCamera=config["use_pi_camera"]).start()
+        time.sleep(config["camera_start_time"])
+        if vStream.read() is None:
+            print('Error: unable to open video source: ', camera_src)
+            camera_src = config["camera_src"]
+        else:
+            cam_init = True
 
     frameAvg = None
     lastUploaded = datetime.datetime.now()

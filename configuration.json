@@ -8,7 +8,7 @@
     "show_video_treshold": false,
     "show_video_delta": false,
     "use_pi_camera": false,
-    "camera_src": 2,
+    "camera_src": null,
     "send_telegram": false,
     "tg_chat_id": 0,
     "telegram_token": ""
